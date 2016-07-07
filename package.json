@@ -1,0 +1,24 @@
+{
+  "name": "diamond-square-terrain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "diamond-square-heightmap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewiiv/diamond-square-terrain.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewiiv/diamond-square-terrain/issues"
+  },
+  "homepage": "https://github.com/matthewiiv/diamond-square-terrain#readme",
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-airbnb-base": "^4.0.0",
+    "eslint-plugin-import": "^1.10.2"
+  }
+}

@@ -1,0 +1,60 @@
+4.0.0 / 2016-07-02
+==================
+ - [breaking] [deps] update `eslint` to v3; drop support for < node 4
+ - [breaking] enable `rest-spread-spacing` rule
+ - [breaking] enable `no-mixed-operators` rule
+ - [breaking] enable `import` rules: `no-named-as-default`, `no-named-as-default-member`, `no-extraneous-dependencies`
+ - [breaking] enable `object-property-newline` rule
+ - [breaking] enable `no-prototype-builtins` rule
+ - [breaking] enable `no-useless-rename` rule
+ - [breaking] enable `unicode-bom` rule
+ - [breaking] Enforce proper generator star spacing (#887)
+ - [breaking] Enable imports/imports-first rule (#882)
+ - [breaking] re-order rules; put import rules in separate file (#881)
+ - [patch] `newline-per-chained-call`: bump the limit to 4
+ - [patch] `object-shorthand`: do not warn when the concise form would have a string literal as a name
+ - [patch] Loosen `prefer-const` to not warn when the variable is “read” before being assigned to
+ - [refactor] fix quoting of rule properties (#885)
+ - [refactor] `quotes`: Use object option form rather than deprecated string form.
+ - [deps] update `eslint`, `eslint-plugin-import`, `eslint-find-rules`, `tape`
+ - [tests] Only run `eslint-find-rules` on prepublish, not in tests
+
+3.0.1 / 2016-05-08
+==================
+ - [patch] re-disable `no-extra-parens` (#869, #867)
+
+3.0.0 / 2016-05-07
+==================
+ - [breaking] enable `import/no-mutable-exports`
+ - [breaking] enable `no-class-assign` rule, to pair with `no-func-assign`
+ - [breaking] widen `no-extra-parens` to include everything, except `nestedBinaryExpressions`
+ - [breaking] Re-enabling `newline-per-chained-call` (#748)
+ - [minor] enable `import/no-amd`
+ - [patch] enable `import/no-duplicates`
+ - [deps] update `eslint`, `eslint-plugin-import`, `eslint-find-rules`
+
+2.0.0 / 2016-04-29
+==================
+ - [breaking] enable `no-unsafe-finally` rule
+ - [semver-minor] enable `no-useless-computed-key` rule
+ - [deps] update `eslint`, `eslint-plugin-import`
+
+1.0.4 / 2016-04-26
+==================
+ - [deps] update `eslint-find-rules`, `eslint-plugin-import`
+
+1.0.3 / 2016-04-21
+==================
+ - [patch: loosen rules] Allow empty class/object methods
+
+1.0.2 / 2016-04-20
+==================
+ - [patch: loosen rules] Allow `break` (#840)
+
+1.0.1 / 2016-04-19
+==================
+ - [patch: loosen rules] Allow `== null` (#542)
+
+1.0.0 / 2016-04-19
+==================
+ - Initial commmit; moved content over from `eslint-config-airbnb` package.
