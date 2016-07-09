@@ -1,9 +1,9 @@
-/* global THREE, addXYZValues, calculateNormal, heightMap */
+/* global THREE, addXYZValues, calculateNormal, heightMap, detail */
 
 function addColors(vector) {
-  if (vector.y > 9) {
+  if (vector.y > (detail * 3)) {
     return new THREE.Vector3(0.8, 0.8, 0.8);
-  } else if (vector.y > 6) {
+  } else if (vector.y > detail) {
     return new THREE.Vector3(0.4, 0.4, 0.4);
   } else if (vector.y > 3) {
     return new THREE.Vector3(0.54, 0.27, 0.074);

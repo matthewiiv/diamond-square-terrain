@@ -1,8 +1,5 @@
 
-const magnitude = 100;
-const detail = 8;
-const roughness = 1 // 0-1
-
+/* global magnitude, detail, roughness */
 
 function sum(a, b) {
   return a + b;
@@ -11,8 +8,8 @@ function sum(a, b) {
 function average(arr) {
   return arr.reduce(sum) / arr.length;
 }
-function proportionalRandomness(size, max) {
-  return (Math.random() - 0.5) * (size / 3);
+function proportionalRandomness(size, height) {
+  return (Math.random() - 0.5) * (size / (1 / roughness)) * (height / 15);
 }
 
 function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
@@ -29,7 +26,7 @@ function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
   if (position !== 'bm' || y !== max - 1 - size) {
     heightArray.push(arr[pos + (half * max)]);
   }
-  const change = proportionalRandomness(size, max);
+  const change = proportionalRandomness(size, average(heightArray));
   const height = average(heightArray) + change;
   return height;
 }
@@ -45,7 +42,7 @@ function diamond(arr, size) {
       heights.push(array[x + size + (y * max)]);
       heights.push(array[x + ((y + size) * max)]);
       heights.push(array[x + size + ((y + size) * max)]);
-      const change = proportionalRandomness(size, max);
+      const change = proportionalRandomness(size, average(heights));
       const height = average(heights) + change;
 
       array[x + half + ((y + half) * (max))] = height;
@@ -106,6 +103,5 @@ function divide(array, size) {
 const terrain = createTerrain(detail);
 const initialHeightMap = setInitialConditions(terrain);
 const heightMap = divide(initialHeightMap, Math.pow(2, detail));
-
 
 window.heightMap = heightMap;
