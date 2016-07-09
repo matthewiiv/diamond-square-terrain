@@ -53,8 +53,8 @@ function setupRenderer() {
 
 function setupCamera() {
   const camera = new THREE.PerspectiveCamera(27, window.innerWidth / window.innerHeight, 1, 3500);
-  camera.position.z = 750;
-  camera.position.y = 500;
+  camera.position.z = 600;
+  camera.position.y = 400;
   camera.rotation.x = -Math.PI / 5;
   return camera;
 }
