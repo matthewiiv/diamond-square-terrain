@@ -1,6 +1,6 @@
 
 const magnitude = 100;
-const detail = 2;
+const detail = 9;
 const roughness = 1 // 0-1
 
 function createTerrain(n) {
@@ -26,11 +26,41 @@ function diamond(arr, size) {
   const max = Math.sqrt(array.length);
   for (let y = 0; y < max - 1; y += size) {
     for (let x = 0; x < max - 1; x += size) {
-      array[x + half + ((y + half) * (max))] = 1;
-      console.log(x, y)
+      const h1 = array[x + (y * max)];
+      const h2 = array[x + size + (y * max)];
+      const h3 = array[x + ((y + size) * max)];
+      const h4 = array[x + size + ((y + size) * max)];
+      const height = ((h1 + h2 + h3 + h4) / 4) + (Math.random() * (size / (max - 1)));
+      array[x + half + ((y + half) * (max))] = height;
     }
   }
   return array;
+}
+
+function sum(a, b) {
+  return a + b;
+}
+
+function average(arr) {
+  return arr.reduce(sum) / arr.length;
+}
+
+function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
+  const heightArray = [];
+  if (position !== 'tm' || y !== 0) {
+    heightArray.push(arr[pos - (half * y)]);
+  }
+  if (position !== 'lm' || x !== 0) {
+    heightArray.push(arr[pos - half]);
+  }
+  if (position !== 'rm' || x !== max - size) {
+    heightArray.push(arr[pos + half]);
+  }
+  if (position !== 'bm' || y !== max - 1 - size) {
+    heightArray.push(arr[pos + (half * y)]);
+  }
+  const height = average(heightArray) + (Math.random() * (size / (max - 1)));
+  return height;
 }
 
 function square(arr, size) {
@@ -39,29 +69,34 @@ function square(arr, size) {
   const max = Math.sqrt(array.length);
   for (let y = 0; y < max - 1; y += size) {
     for (let x = 0; x < max - 1; x += size) {
-      array[x + half + (y * max)] = 1; // Top middle
-      // console.log(x + half + (y * max))
-      array[x + ((y + half) * (max))] = 1; // Left middle
-      // console.log(x + ((y + half) * max))
-      array[x + size + ((y + half) * (max))] = 1; // Right middle
-      // console.log(x + max + ((y + half) * max))
-      array[x + half + ((y + size) * (max))] = 1; // Bottom middle
-      // console.log(x + half + ((y + (size - 1)) * max))
-      // array[] = 1
-      // array[(x) + (half * y * max)] = 1;
+      const pos1 = x + half + (y * max);
+      const h1 = getHeightFromDiamond(pos1, array, x, y, size, max, half, 'tm');
+      array[pos1] = h1; // Top middle
+      const pos2 = x + ((y + half) * (max));
+      const h2 = getHeightFromDiamond(pos2, array, x, y, size, max, half, 'lm');
+      array[pos2] = h2; // Left middle
+      const pos3 = x + size + ((y + half) * (max));
+      const h3 = getHeightFromDiamond(pos3, array, x, y, size, max, half, 'rm');
+      array[pos3] = h3; // Right middle
+      const pos4 = x + half + ((y + size) * (max));
+      const h4 = getHeightFromDiamond(pos4, array, x, y, size, max, half, 'bm');
+      array[pos4] = h4; // Bottom middle
     }
   }
   return array;
 }
 
-let terrain = createTerrain(detail);
-let initialHeightMap = setInitialConditions(terrain);
-// console.log(initialHeightMap)
-let diamond1 = diamond(initialHeightMap, 4)
-console.log(diamond1)
-let square1 = square(diamond1, 4)
-console.log(square1)
-let diamond2 = diamond(square1, 2)
-console.log(diamond2)
-let square2 = square(diamond2, 2)
-console.log(square2)
+function divide(array, size) {
+  if (size === 1) {
+    return array;
+  }
+  diamond(array, size);
+  square(array, size);
+  return divide(array, size / 2);
+}
+
+const terrain = createTerrain(detail);
+const initialHeightMap = setInitialConditions(terrain);
+const heightMap = divide(initialHeightMap, Math.pow(2, detail));
+
+console.log(heightMap);
