@@ -30,7 +30,7 @@ function diamond(arr, size) {
       const h2 = array[x + size + (y * max)];
       const h3 = array[x + ((y + size) * max)];
       const h4 = array[x + size + ((y + size) * max)];
-      const height = ((h1 + h2 + h3 + h4) / 4) + (Math.random() * (size / (max - 1)));
+      const height = ((h1 + h2 + h3 + h4) / 4) + ((Math.random() - 0.5) * (size / (max - 1)));
       array[x + half + ((y + half) * (max))] = height;
     }
   }
@@ -59,7 +59,7 @@ function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
   if (position !== 'bm' || y !== max - 1 - size) {
     heightArray.push(arr[pos + (half * y)]);
   }
-  const height = average(heightArray) + (Math.random() * (size / (max - 1)));
+  const height = average(heightArray) + ((Math.random() - 0.5) * (size / (max - 1)));
   return height;
 }
 
@@ -99,4 +99,5 @@ const terrain = createTerrain(detail);
 const initialHeightMap = setInitialConditions(terrain);
 const heightMap = divide(initialHeightMap, Math.pow(2, detail));
 
-console.log(heightMap);
+
+window.heightMap = heightMap;
