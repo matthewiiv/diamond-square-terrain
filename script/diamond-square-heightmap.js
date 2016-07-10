@@ -1,5 +1,5 @@
 
-/* global magnitude, detail, roughness */
+/* global magnitude, detail, roughness, proportionalRandomness, smoothHeightMap */
 
 function sum(a, b) {
   return a + b;
@@ -8,8 +8,16 @@ function sum(a, b) {
 function average(arr) {
   return arr.reduce(sum) / arr.length;
 }
-function proportionalRandomness(size, height) {
-  return (Math.random() - 0.5) * (size / (1 / roughness)) * (height / 15);
+
+function randomiseCornerWeights(array) {
+  const weights = array.reduce((arr) => {
+    return arr.concat(1 - (Math.random() * 0.01));
+  }, []);
+  const weightedArray = [];
+  for (let i = 0; i < weights.length; i++) {
+    weightedArray.push(weights[i] * array[i]);
+  }
+  return weightedArray;
 }
 
 function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
@@ -26,8 +34,9 @@ function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
   if (position !== 'bm' || y !== max - 1 - size) {
     heightArray.push(arr[pos + (half * max)]);
   }
-  const change = proportionalRandomness(size, average(heightArray));
-  const height = average(heightArray) + change;
+  const weightedCorners = randomiseCornerWeights(heightArray);
+  const change = proportionalRandomness(size, average(weightedCorners));
+  const height = average(weightedCorners) + change;
   return height;
 }
 
@@ -42,8 +51,9 @@ function diamond(arr, size) {
       heights.push(array[x + size + (y * max)]);
       heights.push(array[x + ((y + size) * max)]);
       heights.push(array[x + size + ((y + size) * max)]);
-      const change = proportionalRandomness(size, average(heights));
-      const height = average(heights) + change;
+      const weightedCorners = randomiseCornerWeights(heights);
+      const change = proportionalRandomness(size, average(weightedCorners));
+      const height = average(weightedCorners) + change;
 
       array[x + half + ((y + half) * (max))] = height;
     }
@@ -59,12 +69,12 @@ function createTerrain(n) {
 
 function setInitialConditions(arr) {
   const array = arr;
-  const max = array.length;
-  const width = Math.sqrt(max);
-  array[0] = width / 5;
-  array[max - 1] = (width / 5);
-  array[width - 1] = - (width / 10);
-  array[max - width] = - (width / 10);
+  const arrSize = array.length;
+  const max = Math.sqrt(arrSize);
+  array[0] = max / 5;
+  array[arrSize - 1] = (max / 5);
+  array[max - 1] = - (max / 10);
+  array[arrSize - max] = - (max / 20);
   return array;
 }
 
@@ -103,5 +113,8 @@ function divide(array, size) {
 const terrain = createTerrain(detail);
 const initialHeightMap = setInitialConditions(terrain);
 const heightMap = divide(initialHeightMap, Math.pow(2, detail));
+const smoothedHeightMap = smoothHeightMap(heightMap, 0);
 
+window.average = average;
 window.heightMap = heightMap;
+window.smoothedHeightMap = smoothedHeightMap;
