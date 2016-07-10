@@ -1,14 +1,18 @@
 /* global THREE, addXYZValues, calculateNormal, heightMap, detail */
 
+function colRand(RGB) {
+  return RGB + ((Math.random() - 0.5) * 0.3);
+}
+
 function addColors(vector) {
-  if (vector.y > (detail * 3)) {
-    return new THREE.Vector3(0.8, 0.8, 0.8);
-  } else if (vector.y > detail) {
-    return new THREE.Vector3(0.4, 0.4, 0.4);
-  } else if (vector.y > 3) {
-    return new THREE.Vector3(0.54, 0.27, 0.074);
+  if (vector.y > (detail * 4) + ((Math.random() - 0.5) * 10)) {
+    return new THREE.Vector3(colRand(0.8), colRand(0.8), colRand(0.8));
+  } else if (vector.y > detail + ((Math.random() - 0.5) * 1)) {
+    return new THREE.Vector3(colRand(0.4), colRand(0.4), colRand(0.4));
+  } else if (vector.y > 3 + ((Math.random() - 0.5) * 1)) {
+    return new THREE.Vector3(colRand(0.54), colRand(0.27), colRand(0.074));
   }
-  return new THREE.Vector3(0.1, 0.8, 0.1);
+  return new THREE.Vector3(colRand(0.1), colRand(0.8), colRand(0.1));
 }
 
 
