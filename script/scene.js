@@ -33,9 +33,9 @@ function setupScene() {
   const light1 = new THREE.DirectionalLight(0xffffff, 0.5);
   light1.position.set(1, 1, 1);
   scene.add(light1);
-  const hemiLight = new THREE.HemisphereLight( 0x00000f, 0x00000f, 0.6 );
-  hemiLight.position.set( 0, 500, 0 );
-  scene.add( hemiLight );
+  const hemiLight = new THREE.HemisphereLight(0x00000f, 0x00000f, 0.6);
+  hemiLight.position.set(0, 500, 0);
+  scene.add(hemiLight);
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
   return scene;
