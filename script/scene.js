@@ -1,16 +1,35 @@
 /* global THREE calculatePositions, calculateNormals,
 calculateColors, extractHeightValues,
-injectSmoothedHeights heightMap, smoothedHeightMap */
+injectSmoothedHeights heightMap, smoothedTerrainHeightMap
+waterHeightMap */
+
+function float32Concat(first, second) {
+  const firstLength = first.length;
+  const result = new Float32Array(firstLength + second.length);
+
+  result.set(first);
+  result.set(second, firstLength);
+
+  return result;
+}
 
 function setupGeometry() {
-  const positions = calculatePositions(smoothedHeightMap);
+  const positions = calculatePositions(smoothedTerrainHeightMap);
   const normals = calculateNormals(positions);
-  const colors = calculateColors(positions);
+  const colors = calculateColors(positions, 'terrain');
+
+  const waterPositions = calculatePositions(waterHeightMap);
+  const waterNormals = calculateNormals(waterPositions);
+  const waterColors = calculateColors(waterPositions, 'water');
+
+  const fullPositions = float32Concat(positions, waterPositions);
+  const fullNormals = float32Concat(normals, waterNormals);
+  const fullColors = float32Concat(colors, waterColors);
 
   const geometry = new THREE.BufferGeometry();
-  geometry.addAttribute('position', new THREE.BufferAttribute(Float32Array.from(positions), 3));
-  geometry.addAttribute('normal', new THREE.BufferAttribute(Float32Array.from(normals), 3));
-  geometry.addAttribute('color', new THREE.BufferAttribute(Float32Array.from(colors), 3));
+  geometry.addAttribute('position', new THREE.BufferAttribute(Float32Array.from(fullPositions), 3));
+  geometry.addAttribute('normal', new THREE.BufferAttribute(Float32Array.from(fullNormals), 3));
+  geometry.addAttribute('color', new THREE.BufferAttribute(Float32Array.from(fullColors), 3));
   geometry.computeBoundingSphere();
   return geometry;
 }
@@ -59,6 +78,7 @@ function setupCamera() {
   camera.position.z = 600;
   camera.position.y = 400;
   camera.rotation.x = -Math.PI / 5;
+  camera.rotation.order = 'YXZ';
   return camera;
 }
 

@@ -1,5 +1,5 @@
 
-/* global magnitude, detail, roughness, proportionalRandomness, smoothHeightMap */
+/* global magnitude, detail, roughness, proportionalRandomness, smoothHeightMap MersenneTwister, seedHeightMap */
 
 function sum(a, b) {
   return a + b;
@@ -27,15 +27,15 @@ function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
   }
   if (position !== 'lm' || x !== 0) {
     heightArray.push(arr[pos - half]);
+    if (position !== 'rm' || x !== max - 1 - size) {
   }
-  if (position !== 'rm' || x !== max - 1 - size) {
     heightArray.push(arr[pos + half]);
   }
   if (position !== 'bm' || y !== max - 1 - size) {
     heightArray.push(arr[pos + (half * max)]);
   }
   const weightedCorners = randomiseCornerWeights(heightArray);
-  const change = proportionalRandomness(size, average(weightedCorners));
+  const change = proportionalRandomness(pos, size, average(weightedCorners));
   const height = average(weightedCorners) + change;
   return height;
 }
@@ -52,7 +52,7 @@ function diamond(arr, size) {
       heights.push(array[x + ((y + size) * max)]);
       heights.push(array[x + size + ((y + size) * max)]);
       const weightedCorners = randomiseCornerWeights(heights);
-      const change = proportionalRandomness(size, average(weightedCorners));
+      const change = proportionalRandomness(x + half + ((y + half) * (max)), size, average(weightedCorners));
       const height = average(weightedCorners) + change;
 
       array[x + half + ((y + half) * (max))] = height;
@@ -71,10 +71,10 @@ function setInitialConditions(arr) {
   const array = arr;
   const arrSize = array.length;
   const max = Math.sqrt(arrSize);
-  array[0] = max / 5;
-  array[arrSize - 1] = (max / 5);
-  array[max - 1] = - (max / 10);
-  array[arrSize - max] = - (max / 20);
+  array[0] = max / 5; // Top left
+  array[arrSize - 1] = (max / 5); // Bottom right
+  array[max - 1] = - (max / 10); // Top right
+  array[arrSize - max] = - (max / 20); // Bottom left
   return array;
 }
 
@@ -101,6 +101,10 @@ function square(arr, size) {
   return array;
 }
 
+// function createWater(water) {
+//   return water.forEach(() => 1);
+// }
+
 function divide(array, size) {
   if (size === 1) {
     return array;
@@ -111,10 +115,13 @@ function divide(array, size) {
 }
 
 const terrain = createTerrain(detail);
-const initialHeightMap = setInitialConditions(terrain);
-const heightMap = divide(initialHeightMap, Math.pow(2, detail));
-const smoothedHeightMap = smoothHeightMap(heightMap, 0);
+const water = createTerrain(detail);
+const waterHeightMap = water;
+const initialTerrainHeightMap = setInitialConditions(terrain);
+const terrainHeightMap = divide(initialTerrainHeightMap, Math.pow(2, detail));
+const smoothedTerrainHeightMap = smoothHeightMap(terrainHeightMap, 0);
 
 window.average = average;
-window.heightMap = heightMap;
-window.smoothedHeightMap = smoothedHeightMap;
+window.terrainHeightMap = terrainHeightMap;
+window.smoothedTerrainHeightMap = smoothedTerrainHeightMap;
+window.waterHeightMap = waterHeightMap;
