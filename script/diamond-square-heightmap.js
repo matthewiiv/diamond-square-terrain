@@ -28,7 +28,7 @@ function getHeightFromDiamond(pos, arr, x, y, size, max, half, position) {
   if (position !== 'lm' || x !== 0) {
     heightArray.push(arr[pos - half]);
     if (position !== 'rm' || x !== max - 1 - size) {
-  }
+    }
     heightArray.push(arr[pos + half]);
   }
   if (position !== 'bm' || y !== max - 1 - size) {

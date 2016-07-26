@@ -56,6 +56,11 @@ function setupScene() {
   hemiLight.position.set(0, 500, 0);
   scene.add(hemiLight);
   const mesh = new THREE.Mesh(geometry, material);
+
+  const cubeMesh = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10), new THREE.MeshNormalMaterial());
+  cubeMesh.position.y = 300;
+
+  scene.add(cubeMesh);
   scene.add(mesh);
   return scene;
 }
