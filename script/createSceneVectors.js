@@ -1,18 +1,24 @@
 /* global THREE, addXYZValues, calculateNormal, heightMap, detail */
 
 function colRand(RGB) {
-  return RGB + ((Math.random() - 0.5) * 0.3);
+  return RGB + ((Math.random() - 0.5) * 0.1);
 }
 
-function addColors(vector) {
-  if (vector.y > (detail * 4) + ((Math.random() - 0.5) * 10)) {
-    return new THREE.Vector3(colRand(0.8), colRand(0.8), colRand(0.8));
-  } else if (vector.y > detail + ((Math.random() - 0.5) * 1)) {
-    return new THREE.Vector3(colRand(0.4), colRand(0.4), colRand(0.4));
-  } else if (vector.y > 3 + ((Math.random() - 0.5) * 1)) {
-    return new THREE.Vector3(colRand(0.54), colRand(0.27), colRand(0.074));
+function addColors(vector, label) {
+  if (label === 'terrain') {
+    if (vector.y > (detail * 4) + ((Math.random() - 0.5) * 10)) {
+      return new THREE.Vector3(colRand(0.8), colRand(0.8), colRand(0.8));
+    } else if (vector.y > detail + ((Math.random() - 0.5) * 1)) {
+      return new THREE.Vector3(colRand(0.4), colRand(0.4), colRand(0.4));
+    } else if (vector.y > 3 + ((Math.random() - 0.5) * 1)) {
+      return new THREE.Vector3(colRand(0.54), colRand(0.27), colRand(0.074));
+    }
+    return new THREE.Vector3(colRand(0.1), colRand(0.8), colRand(0.1));
   }
-  return new THREE.Vector3(colRand(0.1), colRand(0.8), colRand(0.1));
+  if (label === 'water') {
+    return new THREE.Vector3(28 / 255, 107 / 255, 160 / 255);
+  }
+  return new THREE.Vector3(0, 0, 0);
 }
 
 
@@ -59,19 +65,19 @@ function calculateNormals(positions) {
   return normals;
 }
 
-function calculateColors(positions) {
+function calculateColors(positions, label) {
   const colors = [];
   for (let i = 0; i < positions.length; i += 18) {
     const v1 = new THREE.Vector3(positions[i], positions[i + 1], positions[i + 2]);
     const v2 = new THREE.Vector3(positions[i + 3], positions[i + 4], positions[i + 5]);
     const v3 = new THREE.Vector3(positions[i + 6], positions[i + 7], positions[i + 8]);
     const v4 = new THREE.Vector3(positions[i + 9], positions[i + 10], positions[i + 11]);
-    addXYZValues(colors, addColors(v1));
-    addXYZValues(colors, addColors(v2));
-    addXYZValues(colors, addColors(v3));
-    addXYZValues(colors, addColors(v2));
-    addXYZValues(colors, addColors(v3));
-    addXYZValues(colors, addColors(v4));
+    addXYZValues(colors, addColors(v1, label));
+    addXYZValues(colors, addColors(v2, label));
+    addXYZValues(colors, addColors(v3, label));
+    addXYZValues(colors, addColors(v2, label));
+    addXYZValues(colors, addColors(v3, label));
+    addXYZValues(colors, addColors(v4, label));
   }
   return colors;
 }
