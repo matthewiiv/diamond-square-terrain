@@ -1,6 +1,8 @@
 
 /* global magnitude, detail, roughness, proportionalRandomness, smoothHeightMap MersenneTwister, seedHeightMap */
 
+const monkeys = WebMonkeys();
+
 function sum(a, b) {
   return a + b;
 }
